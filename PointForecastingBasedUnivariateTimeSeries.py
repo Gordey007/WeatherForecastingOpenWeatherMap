@@ -45,6 +45,7 @@ HISTORICAL_VALUES = 10
 FUTURE_TARGET = 0
 
 # Сформировать наборы данных для обучения
+# X_TRAIN = [наблюдения, временной интервал, кол-во признаков]
 X_TRAIN, Y_TRAIN = utils.get_dataset(dataset, 0, TRAIN_SPLIT, HISTORICAL_VALUES,
                                      FUTURE_TARGET)
 
