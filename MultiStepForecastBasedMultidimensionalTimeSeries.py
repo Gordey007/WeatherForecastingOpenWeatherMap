@@ -3,7 +3,6 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import utils
 
-
 # Создать DataFrame из csv файла
 DF = pd.read_csv('openweathermapkomsomolskonamur20172022_2.csv')
 # Вывести первые и последние 5 строк DataFrame
@@ -11,6 +10,9 @@ print(DF)
 
 # Выбрать временные ряды.
 # Временной ряд, который будет прогнозироваться должен стоять на второй позиции (clouds_all)
+# Список атрибутов из DataFrame
+# ['temp', 'clouds_all', 'pressure', 'humidity',
+# 'wind_speed', 'wind_deg', 'rain_1h', 'snow_1h', 'leftovers']
 FEATURES_CONSIDERED = ['temp', 'clouds_all', 'leftovers']
 dataset = DF[FEATURES_CONSIDERED]
 # Добавить индекс (дата и время)
@@ -47,9 +49,9 @@ for item in standard_deviation:
 dataset = (dataset - MEAN) / standard_deviation
 
 # Кол-во последних зарегистрированных наблюдений, которые будут подавать на вход модели
-HISTORICAL_VALUES = 24
+HISTORICAL_VALUES = 36
 # Спрогнозировать следующие значение
-FUTURE_TARGET = 5
+FUTURE_TARGET = 12
 # Установить шаг интервала
 STEP = 1
 
@@ -106,5 +108,6 @@ utils.plot_train_history(multi_step_history, 'Ошибка на обучении
 n = 10
 for x, y in validation_dataset.take(n):
     utils.multi_step_plot(x[0] * standard_deviation[1] + MEAN[1],
-                    y[0] * standard_deviation[1] + MEAN[1],
-                    multi_step_model.predict(x)[0] * standard_deviation[1] + MEAN[1], STEP)
+                          y[0] * standard_deviation[1] + MEAN[1],
+                          multi_step_model.predict(x)[0] * standard_deviation[1] + MEAN[1],
+                          STEP)
